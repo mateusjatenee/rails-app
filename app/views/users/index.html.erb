@@ -102,8 +102,10 @@
     <% end %>
   </section>
 
+  <%= render "users/environment", sections: @environment %>
+
   <footer class="flex items-center justify-between gap-4 pt-6 text-xs uppercase tracking-[0.1em] text-neutral-400">
-    <span>Rails <%= Rails.version %></span>
+    <span>Ruby <%= RUBY_VERSION %> · Rails <%= Rails.version %></span>
     <span>User registry</span>
   </footer>
 </main>

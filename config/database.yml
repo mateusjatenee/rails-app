@@ -20,10 +20,17 @@ test:
   <<: *default
   database: storage/test.sqlite3
 
-# The primary production database is supplied by the deployment platform.
+# The primary production database is supplied by the deployment platform via
+# DATABASE_URL. When it is absent the app falls back to a local SQLite file so
+# it can still boot and serve the environment page.
 production:
   primary:
-    url: <%= ENV["DATABASE_URL"] %>
+<% if ENV["DATABASE_URL"].to_s.strip.empty? %>
+    <<: *default
+    database: storage/production.sqlite3
+<% else %>
+    url: <%= ENV["DATABASE_URL"].sub(%r{\Amysql://}, "mysql2://") %>
+<% end %>
   cache:
     <<: *default
     database: storage/production_cache.sqlite3
